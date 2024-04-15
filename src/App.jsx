@@ -6,11 +6,23 @@ function App() {
 
   const [pokemons, setPokemons] = useState([])
 
+  const changeFirstCharToUpperCase = (arr) => {
+    const completedArr = arr.map(pokemon => {
+      const firstChar = pokemon.name.charAt(0).toUpperCase()
+      const newName = firstChar + pokemon.name.slice(1)
+      return {...pokemon, name: newName}
+    })
+    return completedArr
+  }
+
   const handleBrowsePokemons = () => {
     if (!pokemons.length) {
       fetch("https://pokeapi.co/api/v2/pokemon")
         .then(res => res.json())
-        .then(data => setPokemons(data.results))
+        .then(data => {
+          const allPokemons = changeFirstCharToUpperCase(data.results)
+          setPokemons(allPokemons)
+        })
     }
   }
 
